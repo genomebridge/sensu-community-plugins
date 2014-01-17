@@ -14,7 +14,7 @@ class DiskGraphite < Sensu::Plugin::Metric::CLI::Graphite
     :description => "Metric naming scheme, text to prepend to metric",
     :short => "-s SCHEME",
     :long => "--scheme SCHEME",
-    :default => "#{jobinfo["currentJobId"]}.#{jobinfo["task"]}.#{Socket.gethostname}.disk"
+    :default => "#{jobinfo["id"]}.#{jobinfo["task"]}.#{Socket.gethostname}.disk"
 
   def run
     # http://www.kernel.org/doc/Documentation/iostats.txt
