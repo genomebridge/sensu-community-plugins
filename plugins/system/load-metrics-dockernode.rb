@@ -40,7 +40,9 @@ class LoadStat < Sensu::Plugin::Metric::CLI::Graphite
 
   conf = YAML::load_file('/etc/overlord.conf')
   jobinfo = get_job_id(Socket.gethostname, conf["authtoken"],conf["gateway"])
-
+  if jobinfo["id"]=="Unknown"
+    exit 1
+  end
   option :scheme,
     :description => "Metric naming scheme, text to prepend to .$parent.$child",
     :long => "--scheme SCHEME",
