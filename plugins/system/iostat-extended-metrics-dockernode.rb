@@ -15,7 +15,7 @@ require 'rubygems' if RUBY_VERSION < '1.9.0'
 require 'sensu-plugin/metric/cli'
 require 'socket'
 require 'yaml'
-load 'restlib.rb'
+load '/etc/restlib.rb'
 
 class IOStatExtended < Sensu::Plugin::Metric::CLI::Graphite
 
