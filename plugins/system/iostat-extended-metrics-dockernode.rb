@@ -19,13 +19,13 @@ load 'restlib.rb'
 
 class IOStatExtended < Sensu::Plugin::Metric::CLI::Graphite
 
-  conf = YAML::load_file('/etc/overlord.cf')
-  jobinfo = get_job_id(Socket.gethostname, conf[:authtoken],conf[:gateway]) 
+  conf = YAML::load_file('/etc/overlord.conf')
+  jobinfo = get_job_id(Socket.gethostname, conf["authtoken"],conf["gateway"])
 
   option :scheme,
     :description => "Metric naming scheme, text to prepend to .$parent.$child",
     :long => "--scheme SCHEME",
-    :default => "#{Socket.gethostname}.iostat"
+    :default => "#{jobinfo["currentJobId"]}.#{jobinfo["task"]}.#{Socket.gethostname}.iostat"
 
   option :disk,
     :description => "Disk to gather stats for",
