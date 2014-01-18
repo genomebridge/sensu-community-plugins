@@ -16,7 +16,7 @@ require 'socket'
 require 'yaml'
 load '/etc/restlib.rb'
 
-class NetIFMetrics < Sensu::Plugin::Metric::CLI::Graphite
+class NetIFMetricsDockernode < Sensu::Plugin::Metric::CLI::Graphite
   conf = YAML::load_file('/etc/overlord.conf')
   jobinfo = get_job_id(Socket.gethostname, conf["authtoken"],conf["gateway"])
   if jobinfo["id"]=="Unknown"
