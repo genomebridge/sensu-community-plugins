@@ -17,7 +17,7 @@ require 'socket'
 require 'yaml'
 load '/etc/restlib.rb'
 
-class IOStatExtended < Sensu::Plugin::Metric::CLI::Graphite
+class IOStatExtendedDockernode < Sensu::Plugin::Metric::CLI::Graphite
 
   conf = YAML::load_file('/etc/overlord.conf')
   jobinfo = get_job_id(Socket.gethostname, conf["authtoken"],conf["gateway"])
