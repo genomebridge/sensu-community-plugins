@@ -6,7 +6,7 @@ require 'socket'
 require 'yaml'
 load '/etc/restlib.rb'
 
-class MemoryGraphite < Sensu::Plugin::Metric::CLI::Graphite
+class MemoryGraphiteDockernode < Sensu::Plugin::Metric::CLI::Graphite
 
   conf = YAML::load_file('/etc/overlord.conf')
   jobinfo = get_job_id(Socket.gethostname, conf["authtoken"],conf["gateway"])
