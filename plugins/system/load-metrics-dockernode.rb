@@ -36,7 +36,7 @@ if RUBY_VERSION < '1.9.0'
   end
 end
 
-class LoadStat < Sensu::Plugin::Metric::CLI::Graphite
+class LoadStatDockernode < Sensu::Plugin::Metric::CLI::Graphite
 
   conf = YAML::load_file('/etc/overlord.conf')
   jobinfo = get_job_id(Socket.gethostname, conf["authtoken"],conf["gateway"])
