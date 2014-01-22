@@ -18,16 +18,16 @@ load '/etc/restlib.rb'
 
 class NetIFMetricsDockernode < Sensu::Plugin::Metric::CLI::Graphite
   conf = YAML::load_file('/etc/overlord.conf')
-  jobinfo = get_job_id(Socket.gethostname, conf["authtoken"],conf["gateway"])
-  if jobinfo["id"]=="Unknown"
-    exit 1
-  end
+  @@jobinfo = get_job_id(Socket.gethostname, conf["authtoken"],conf["gateway"])
   option :scheme,
     :description => "Metric naming scheme, text to prepend to .$parent.$child",
     :long => "--scheme SCHEME",
-    :default => "#{jobinfo["id"]}.#{jobinfo["task"]}.#{Socket.gethostname}"
+    :default => "#{@@jobinfo["id"]}.#{@@jobinfo["task"]}.#{Socket.gethostname}"
 
   def run
+    if @@jobinfo["id"]=="Unknown"
+      ok
+    end
     `sar -n DEV 1 1 | grep Average | grep -v IFACE`.each_line do |line|
       stats = line.split(/\s+/)
       unless stats.empty?
