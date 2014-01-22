@@ -26,7 +26,6 @@ class NetIFMetricsDockernode < Sensu::Plugin::Metric::CLI::Graphite
 
   def run
     if @@jobinfo["id"]=="Unknown"
-      output "UNKNOWN"
       ok
     end
     `sar -n DEV 1 1 | grep Average | grep -v IFACE`.each_line do |line|
