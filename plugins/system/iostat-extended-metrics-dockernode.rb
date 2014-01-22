@@ -20,14 +20,11 @@ load '/etc/restlib.rb'
 class IOStatExtendedDockernode < Sensu::Plugin::Metric::CLI::Graphite
 
   conf = YAML::load_file('/etc/overlord.conf')
-  jobinfo = get_job_id(Socket.gethostname, conf["authtoken"],conf["gateway"])
-  if jobinfo["id"]=="Unknown"
-    exit 1
-  end
+  @@jobinfo = get_job_id(Socket.gethostname, conf["authtoken"],conf["gateway"])
   option :scheme,
     :description => "Metric naming scheme, text to prepend to .$parent.$child",
     :long => "--scheme SCHEME",
-    :default => "#{jobinfo["id"]}.#{jobinfo["task"]}.#{Socket.gethostname}.iostat"
+    :default => "#{@@jobinfo["id"]}.#{@@jobinfo["task"]}.#{Socket.gethostname}.iostat"
 
   option :disk,
     :description => "Disk to gather stats for",
@@ -82,6 +79,10 @@ class IOStatExtendedDockernode < Sensu::Plugin::Metric::CLI::Graphite
   end
 
   def run
+    if @@jobinfo["id"]=="Unknown"
+      ok
+    end
+    
     cmd = "iostat -x #{config[:interval]} 2"
     if config[:disk]
       cmd += " #{File.basename(config[:disk])}"
