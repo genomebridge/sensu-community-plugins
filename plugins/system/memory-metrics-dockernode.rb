@@ -9,18 +9,18 @@ load '/etc/restlib.rb'
 class MemoryGraphiteDockernode < Sensu::Plugin::Metric::CLI::Graphite
 
   conf = YAML::load_file('/etc/overlord.conf')
-  jobinfo = get_job_id(Socket.gethostname, conf["authtoken"],conf["gateway"])
-  if jobinfo["id"]=="Unknown"
-    exit 1
-  end
+  @@jobinfo = get_job_id(Socket.gethostname, conf["authtoken"],conf["gateway"])
   option :scheme,
     :description => "Metric naming scheme, text to prepend to metric",
     :short => "-s SCHEME",
     :long => "--scheme SCHEME",
-    :default => "#{jobinfo["id"]}.#{jobinfo["task"]}.#{Socket.gethostname}.memory"
+    :default => "#{@@jobinfo["id"]}.#{@@jobinfo["task"]}.#{Socket.gethostname}.memory"
 
   def run
     # Metrics borrowed from hoardd: https://github.com/coredump/hoardd
+    if @@jobinfo["id"]=="Unknown"
+      ok
+    end
 
     mem = {}
     File.open("/proc/meminfo", "r").each_line do |line|
