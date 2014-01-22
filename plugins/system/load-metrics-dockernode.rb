@@ -39,14 +39,11 @@ end
 class LoadStatDockernode < Sensu::Plugin::Metric::CLI::Graphite
 
   conf = YAML::load_file('/etc/overlord.conf')
-  jobinfo = get_job_id(Socket.gethostname, conf["authtoken"],conf["gateway"])
-  if jobinfo["id"]=="Unknown"
-    exit 1
-  end
+  @@jobinfo = get_job_id(Socket.gethostname, conf["authtoken"],conf["gateway"])
   option :scheme,
     :description => "Metric naming scheme, text to prepend to .$parent.$child",
     :long => "--scheme SCHEME",
-    :default => "#{jobinfo["id"]}.#{jobinfo["task"]}.#{Socket.gethostname}"
+    :default => "#{@@jobinfo["id"]}.#{@@jobinfo["task"]}.#{Socket.gethostname}"
 
   option :per_core,
     :description => 'Divide load average results by cpu/core count',
@@ -60,6 +57,10 @@ class LoadStatDockernode < Sensu::Plugin::Metric::CLI::Graphite
   end
 
   def run
+    if @@jobinfo["id"]=="Unknown"
+      ok
+    end
+
     result = `uptime`.gsub(',', '').split(' ')
     result = result[-3..-1]
 
