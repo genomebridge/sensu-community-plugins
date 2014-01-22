@@ -8,17 +8,18 @@ load '/etc/restlib.rb'
 
 class DiskGraphiteDockernode < Sensu::Plugin::Metric::CLI::Graphite
   conf = YAML::load_file('/etc/overlord.conf')
-  jobinfo = get_job_id(Socket.gethostname, conf["authtoken"],conf["gateway"])
-  if jobinfo["id"]=="Unknown"
-    exit 1
-  end
+  @@jobinfo = get_job_id(Socket.gethostname, conf["authtoken"],conf["gateway"])
   option :scheme,
     :description => "Metric naming scheme, text to prepend to metric",
     :short => "-s SCHEME",
     :long => "--scheme SCHEME",
-    :default => "#{jobinfo["id"]}.#{jobinfo["task"]}.#{Socket.gethostname}.disk"
+    :default => "#{@@jobinfo["id"]}.#{@@jobinfo["task"]}.#{Socket.gethostname}.disk"
 
   def run
+    if @@jobinfo["id"]=="Unknown"
+      exit 1
+    end
+    
     # http://www.kernel.org/doc/Documentation/iostats.txt
     metrics = [
       'reads', 'readsMerged', 'sectorsRead', 'readTime',
