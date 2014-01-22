@@ -17,7 +17,7 @@ class DiskGraphiteDockernode < Sensu::Plugin::Metric::CLI::Graphite
 
   def run
     if @@jobinfo["id"]=="Unknown"
-      exit 1
+      ok
     end
     
     # http://www.kernel.org/doc/Documentation/iostats.txt
