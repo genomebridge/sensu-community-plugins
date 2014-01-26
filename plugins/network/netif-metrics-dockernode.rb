@@ -22,7 +22,7 @@ class NetIFMetricsDockernode < Sensu::Plugin::Metric::CLI::Graphite
   option :scheme,
     :description => "Metric naming scheme, text to prepend to .$parent.$child",
     :long => "--scheme SCHEME",
-    :default => "#{@@jobinfo["id"]}.#{@@jobinfo["task"]}.#{Socket.gethostname}"
+    :default => "#{@@jobinfo["task"]}.#{@@jobinfo["id"]}.#{Socket.gethostname}"
 
   def run
     if @@jobinfo["id"]=="Unknown"
