@@ -14,7 +14,7 @@ class MemoryGraphiteDockernode < Sensu::Plugin::Metric::CLI::Graphite
     :description => "Metric naming scheme, text to prepend to metric",
     :short => "-s SCHEME",
     :long => "--scheme SCHEME",
-    :default => "#{@@jobinfo["id"]}.#{@@jobinfo["task"]}.#{Socket.gethostname}.memory"
+    :default => "#{@@jobinfo["task"]}.#{@@jobinfo["id"]}.#{Socket.gethostname}.memory"
 
   def run
     # Metrics borrowed from hoardd: https://github.com/coredump/hoardd
