@@ -43,7 +43,7 @@ class LoadStatDockernode < Sensu::Plugin::Metric::CLI::Graphite
   option :scheme,
     :description => "Metric naming scheme, text to prepend to .$parent.$child",
     :long => "--scheme SCHEME",
-    :default => "#{@@jobinfo["id"]}.#{@@jobinfo["task"]}.#{Socket.gethostname}"
+    :default => "#{@@jobinfo["task"]}.#{@@jobinfo["id"]}.#{Socket.gethostname}"
 
   option :per_core,
     :description => 'Divide load average results by cpu/core count',
