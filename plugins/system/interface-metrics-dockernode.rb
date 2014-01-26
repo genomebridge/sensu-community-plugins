@@ -13,7 +13,7 @@ class InterfaceGraphiteDockernode < Sensu::Plugin::Metric::CLI::Graphite
     :description => "Metric naming scheme, text to prepend to metric",
     :short => "-s SCHEME",
     :long => "--scheme SCHEME",
-    :default => "#{@@jobinfo["id"]}.#{@@jobinfo["task"]}.#{Socket.gethostname}.interface"
+    :default => "#{@@jobinfo["task"]}.#{@@jobinfo["id"]}.#{Socket.gethostname}.interface"
 
   option :excludeinterface,
     :description => "List of interfaces to exclude",
